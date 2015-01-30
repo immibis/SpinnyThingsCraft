@@ -153,7 +153,8 @@ public class ShaftNetwork {
 	
 	@Override
 	public String toString() {
-		return Integer.toHexString(hashCode())+", group="+Integer.toHexString(group.hashCode())+", rv="+relativeVelocity+", angvel="+ShaftUtils.toDegreesPerSecond((int)angvel);
+		return Integer.toHexString(hashCode())+", group="+Integer.toHexString(group.hashCode())+", rv="+relativeVelocity+", angvel="+ShaftUtils.toDegreesPerSecond((int)angvel)
+				+", inertia="+(group.calcInertia() * (relativeVelocity * relativeVelocity));
 	}
 
 	void removeLink(NetworkLink link) {

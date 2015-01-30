@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.7"/>
+	<classpathentry kind="con" path="20E842C0-E101-35FD-A39C-E059B1BC43D4.forgeClasspathContainer/1.7.10-10.13.2.1291"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

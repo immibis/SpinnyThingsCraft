@@ -19,7 +19,7 @@ public class TileMillstone extends TileShaft implements IInventory, ISidedInvent
 	
 	@Override
 	public AxisAlignedBB getRenderBoundingBox() {
-		return AxisAlignedBB.getAABBPool().getAABB(xCoord-2, yCoord-1, zCoord-2, xCoord+2, yCoord+1, zCoord+2);
+		return AxisAlignedBB.getBoundingBox(xCoord-2, yCoord-1, zCoord-2, xCoord+2, yCoord+1, zCoord+2);
 	}
 	
 	private ItemStack processing;

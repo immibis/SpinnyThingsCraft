@@ -24,7 +24,7 @@ public class TileCartBooster extends TileShaft implements SpeedTorqueCurve {
 		speed *= 2.0;
 		speed = Math.abs(speed);
 		
-		AxisAlignedBB bb = AxisAlignedBB.getAABBPool().getAABB(xCoord, yCoord+1, zCoord, xCoord+1, yCoord+2, zCoord+1);
+		AxisAlignedBB bb = AxisAlignedBB.getBoundingBox(xCoord, yCoord+1, zCoord, xCoord+1, yCoord+2, zCoord+1);
 		for(EntityMinecart mc : (List<EntityMinecart>)worldObj.getEntitiesWithinAABB(EntityMinecart.class, bb)) {
 			double curSpeed = Math.sqrt(mc.motionX*mc.motionX+mc.motionZ*mc.motionZ);
 			if(curSpeed < 0.01 || curSpeed >= speed*0.9)

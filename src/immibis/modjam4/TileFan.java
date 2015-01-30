@@ -36,35 +36,35 @@ public class TileFan extends TileShaft implements SpeedTorqueCurve {
 		
 		switch(getBlockMetadata()) {
 		case 5: // -X
-			for(Entity e : (List<Entity>)worldObj.getEntitiesWithinAABB(Entity.class, AxisAlignedBB.getAABBPool().getAABB(xCoord-range, yCoord-OVERHANG, zCoord-OVERHANG, xCoord, yCoord+1+OVERHANG, zCoord+1+OVERHANG))) {
+			for(Entity e : (List<Entity>)worldObj.getEntitiesWithinAABB(Entity.class, AxisAlignedBB.getBoundingBox(xCoord-range, yCoord-OVERHANG, zCoord-OVERHANG, xCoord, yCoord+1+OVERHANG, zCoord+1+OVERHANG))) {
 				if(e instanceof EntityPlayer)
 					continue;
 				e.motionX -= speed;
 			}
 			break;
 		case 4: // +X
-			for(Entity e : (List<Entity>)worldObj.getEntitiesWithinAABB(Entity.class, AxisAlignedBB.getAABBPool().getAABB(xCoord+1, yCoord-OVERHANG, zCoord-OVERHANG, xCoord+1+range, yCoord+1+OVERHANG, zCoord+1+OVERHANG))) {
+			for(Entity e : (List<Entity>)worldObj.getEntitiesWithinAABB(Entity.class, AxisAlignedBB.getBoundingBox(xCoord+1, yCoord-OVERHANG, zCoord-OVERHANG, xCoord+1+range, yCoord+1+OVERHANG, zCoord+1+OVERHANG))) {
 				if(e instanceof EntityPlayer)
 					continue;
 				e.motionX += speed;
 			}
 			break;
 		case 3: // -Z
-			for(Entity e : (List<Entity>)worldObj.getEntitiesWithinAABB(Entity.class, AxisAlignedBB.getAABBPool().getAABB(xCoord-OVERHANG, yCoord-OVERHANG, zCoord-range, xCoord+1+OVERHANG, yCoord+1+OVERHANG, zCoord))) {
+			for(Entity e : (List<Entity>)worldObj.getEntitiesWithinAABB(Entity.class, AxisAlignedBB.getBoundingBox(xCoord-OVERHANG, yCoord-OVERHANG, zCoord-range, xCoord+1+OVERHANG, yCoord+1+OVERHANG, zCoord))) {
 				if(e instanceof EntityPlayer)
 					continue;
 				e.motionZ -= speed;
 			}
 			break;
 		case 2: // +Z
-			for(Entity e : (List<Entity>)worldObj.getEntitiesWithinAABB(Entity.class, AxisAlignedBB.getAABBPool().getAABB(xCoord-OVERHANG, yCoord-OVERHANG, zCoord+1, xCoord+1+OVERHANG, yCoord+1+OVERHANG, zCoord+1+range))) {
+			for(Entity e : (List<Entity>)worldObj.getEntitiesWithinAABB(Entity.class, AxisAlignedBB.getBoundingBox(xCoord-OVERHANG, yCoord-OVERHANG, zCoord+1, xCoord+1+OVERHANG, yCoord+1+OVERHANG, zCoord+1+range))) {
 				if(e instanceof EntityPlayer)
 					continue;
 				e.motionZ += speed;
 			}
 			break;
 		case 1: // -Y
-			for(Entity e : (List<Entity>)worldObj.getEntitiesWithinAABB(Entity.class, AxisAlignedBB.getAABBPool().getAABB(xCoord-OVERHANG, yCoord-range, zCoord-OVERHANG, xCoord+1+OVERHANG, yCoord, zCoord+1+OVERHANG))) {
+			for(Entity e : (List<Entity>)worldObj.getEntitiesWithinAABB(Entity.class, AxisAlignedBB.getBoundingBox(xCoord-OVERHANG, yCoord-range, zCoord-OVERHANG, xCoord+1+OVERHANG, yCoord, zCoord+1+OVERHANG))) {
 				if(e instanceof EntityPlayer)
 					continue;
 				e.motionY -= speed;
@@ -73,7 +73,7 @@ public class TileFan extends TileShaft implements SpeedTorqueCurve {
 			}
 			break;
 		case 0: // +Y
-			for(Entity e : (List<Entity>)worldObj.getEntitiesWithinAABB(Entity.class, AxisAlignedBB.getAABBPool().getAABB(xCoord-OVERHANG, yCoord+1, zCoord-OVERHANG, xCoord+1+OVERHANG, yCoord+1+range, zCoord+1+OVERHANG))) {
+			for(Entity e : (List<Entity>)worldObj.getEntitiesWithinAABB(Entity.class, AxisAlignedBB.getBoundingBox(xCoord-OVERHANG, yCoord+1, zCoord-OVERHANG, xCoord+1+OVERHANG, yCoord+1+range, zCoord+1+OVERHANG))) {
 				if(e instanceof EntityPlayer)
 					continue;
 				e.motionY += speed * 2;

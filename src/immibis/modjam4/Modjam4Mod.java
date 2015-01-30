@@ -1,5 +1,6 @@
 package immibis.modjam4;
 
+import immibis.modjam4.bigblocks.BigBlockPlacementHighlightHandler;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.RenderBlocks;
@@ -11,6 +12,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.IBlockAccess;
+import net.minecraftforge.common.MinecraftForge;
 import cpw.mods.fml.client.registry.ClientRegistry;
 import cpw.mods.fml.client.registry.ISimpleBlockRenderingHandler;
 import cpw.mods.fml.client.registry.RenderingRegistry;
@@ -69,6 +71,8 @@ public class Modjam4Mod
     public void init(FMLInitializationEvent event)
     {
     	FMLCommonHandler.instance().bus().register(this);
+    	
+    	MinecraftForge.EVENT_BUS.register(new BigBlockPlacementHighlightHandler());
     	
 		blockWoodenShaft = new BlockShaft(Material.wood);
 		blockWoodenShaft.setBlockName("immibis_modjam4.woodenShaft");
