@@ -1,36 +1,64 @@
 package immibis.modjam4.shaftnet;
 
 public class NetworkLink {
-	public ShaftNetwork netA;
-	public ShaftNetwork netB;
-	public double velocityMultiplier; // netA.angvel * velocityMultiplier = netB.angvel. Must never be zero.
+	ShaftNetwork netA;
+	ShaftNetwork netB;
+	public final double velocityMultiplier; // netA.angvel * velocityMultiplier = netB.angvel. Must never be zero.
 	
-	public NetworkLink(ShaftNetwork a, ShaftNetwork b, double m) {
+	private boolean deleted = false;
+	public boolean isDeleted() {return deleted;}
+	void markDeleted() {deleted = true;}
+	
+	NetworkLink(ShaftNetwork a, ShaftNetwork b, double m) {
 		netA = a;
 		netB = b;
 		velocityMultiplier = m;
 	}
 
 	public void unlink() {
-		//System.out.println("unlinking "+netA+" and "+netB);
-		netA.removeLink(this);
-		netB.removeLink(this);
-		NetworkGroup oldBG = netB.group;
-		netA.propagateNewGroup();
-		if(netB.group == oldBG)
-			netB.propagateNewGroup();
-		//System.out.println("unlinked "+netA+" and "+netB);
-	}
-
-	public void link() {
-		//System.out.println("linking "+netA+" and "+netB);
-		netA.addLink(this);
-		netB.addLink(this);
-		//System.out.println("linked "+netA+" and "+netB);
+		if(isDeleted()) {
+			new Throwable("warning: tried to delete link that is already deleted").printStackTrace();
+			return;
+		}
+		
+		if(!netA.links.remove(this) || !netB.links.remove(this))
+			throw new AssertionError("Link wasn't referenced by network?");
+		
+		if(netA.group != netB.group)
+			throw new AssertionError("Nets were previously linked but in different groups??");
+		
+		if(!ShaftPhysicsUniverse.findPathBetweenNetworks(netA, netB)) {
+			NetworkGroup newNetAGroup = netA.getUniverse().createGroup();
+			netA.propagateGroup(newNetAGroup);
+			if(netA.group != newNetAGroup)
+				throw new AssertionError();
+		}
+		
+		markDeleted();
 	}
 	
 	@Override
 	public String toString() {
-		return "Link("+netA+", "+netB+")";
+		if(isDeleted())
+			return "<deleted link>";
+		return "Link("+netA+" * "+velocityMultiplier+" = "+netB+")";
+	}
+
+	/** Checks some invariants. */
+	public void validate() {
+		if(netA == null || netB == null)
+			throw new AssertionError("link contains null net reference");
+		if(netA.isDeleted() || netB.isDeleted())
+			throw new AssertionError("link contains deleted net reference");
+		if(!netA.links.contains(this) || !netB.links.contains(this))
+			throw new AssertionError("net does not refer back to link");
+		if(velocityMultiplier == 0)
+			throw new AssertionError("link has 0 velocity multiplier");
+	}
+
+	public ShaftNetwork getOther(ShaftNetwork n) {
+		if(n == netA) return netB;
+		if(n == netB) return netA;
+		throw new AssertionError("not passed either network (passed "+n+", link is "+this+")");
 	}
 }

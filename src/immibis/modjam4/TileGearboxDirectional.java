@@ -13,14 +13,13 @@ public class TileGearboxDirectional extends TileMachine {
 	}
 	
 	@Override
-	protected void updateNeighbourConnections() {
-		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
-		shaftNode.updateNeighbours();
+	protected void onUnload() {
+		shaftNode.deleteNode();
 	}
 	
 	@Override
-	public void updateEntity() {
-		shaftNode.tick();
-		super.updateEntity();
+	protected void updateNeighbourConnections() {
+		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+		shaftNode.updateNeighbours();
 	}
 }

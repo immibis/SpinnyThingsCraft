@@ -1,12 +1,19 @@
 package immibis.modjam4;
 
+import cpw.mods.fml.relauncher.Side;
+import cpw.mods.fml.relauncher.SideOnly;
 import immibis.modjam4.shaftnet.ShaftNode;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.nbt.NBTTagCompound;
+import net.minecraft.network.NetworkManager;
+import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.util.ChatComponentText;
 
 public class TileShaft extends TileMachine {
 	
 	ShaftNode shaftNode = createShaftNode();
+	
+	public int clientNetID;
 	
 	protected ShaftNode createShaftNode() {
 		return new ShaftNode(this);
@@ -15,6 +22,12 @@ public class TileShaft extends TileMachine {
 	@Override
 	public ShaftNode getShaftNode(int side) {
 		return (side & 6) == (getBlockMetadata() & 6) ? shaftNode : null;
+	}
+	
+	@Override
+	public void updateContainingBlockInfo() {
+		super.updateContainingBlockInfo();
+		shaftNode.setSideMask(getSideMask());
 	}
 	
 	@Override
@@ -30,8 +43,20 @@ public class TileShaft extends TileMachine {
 			shaftNode.setSideMask(getSideMask());
 			updateNeighbourConnections();
 		}
+		if(!worldObj.isRemote) {
+			int netID = shaftNode.getNetwork().netID;
+			if(netID != clientNetID) {
+				worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
+				clientNetID = netID;
+			}
+		}
 		super.updateEntity();
-		shaftNode.tick();
+	}
+	
+	protected void onUnload() {
+		firstTick = true;
+		shaftNode.deleteNode();
+		super.onUnload();
 	}
 	
 	protected int getSideMask() {
@@ -46,11 +71,27 @@ public class TileShaft extends TileMachine {
 
 	public boolean debug(EntityPlayer pl) {
 		
-		if(!worldObj.isRemote)
+		if(worldObj.isRemote) {
+			pl.addChatComponentMessage(new ChatComponentText("client net ID: " + clientNetID));
 			return false;
+		}
 		
 		pl.addChatComponentMessage(new ChatComponentText("network: "+shaftNode.getNetwork()));
 		
 		return false;
+	}
+	
+	@Override
+	@SideOnly(Side.CLIENT)
+	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
+		clientNetID = pkt.func_148857_g().getInteger("netID");
+		super.onDataPacket(net, pkt);
+	}
+	
+	@Override
+	public S35PacketUpdateTileEntity getDescriptionPacket() {
+		NBTTagCompound tag = new NBTTagCompound();
+		tag.setInteger("netID", shaftNode.getNetwork().netID);
+		return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, tag);
 	}
 }

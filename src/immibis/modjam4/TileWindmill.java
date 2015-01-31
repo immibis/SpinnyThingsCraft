@@ -2,10 +2,6 @@ package immibis.modjam4;
 
 import immibis.modjam4.shaftnet.ShaftNode;
 import immibis.modjam4.shaftnet.SpeedTorqueCurve;
-import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.util.AxisAlignedBB;
 
 /**
@@ -75,19 +71,6 @@ public class TileWindmill extends TileShaft implements SpeedTorqueCurve {
 			maxSpeed = NORMAL_SPEED;
 			maxSpeed *= obstructionMultiplier;
 		}
-	}
-	
-	@Override
-	public Packet getDescriptionPacket() {
-		NBTTagCompound tag = new NBTTagCompound();
-		tag.setInteger("wind", Modjam4Mod.windSpeed);
-		tag.setLong("angvel", shaftNode.getNetwork().angvel);
-		return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, tag);
-	}
-	
-	@Override
-	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
-		shaftNode.getNetwork().forceAngVel(pkt.func_148857_g().getLong("angvel"));
 	}
 	
 	private void checkObstructions() {

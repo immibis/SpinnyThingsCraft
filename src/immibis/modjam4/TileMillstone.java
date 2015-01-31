@@ -10,9 +10,6 @@ import net.minecraft.inventory.IInventory;
 import net.minecraft.inventory.ISidedInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NBTTagCompound;
-import net.minecraft.network.NetworkManager;
-import net.minecraft.network.Packet;
-import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
 import net.minecraft.util.AxisAlignedBB;
 
 public class TileMillstone extends TileShaft implements IInventory, ISidedInventory, SpeedTorqueCurve {
@@ -25,16 +22,6 @@ public class TileMillstone extends TileShaft implements IInventory, ISidedInvent
 	private ItemStack processing;
 	private int progress;
 	private boolean isProcessing;
-	
-	@Override
-	public void onDataPacket(NetworkManager net, S35PacketUpdateTileEntity pkt) {
-		isProcessing = pkt.func_148853_f() != 0;
-	}
-	
-	@Override
-	public Packet getDescriptionPacket() {
-		return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, processing != null ? 1 : 0, null);
-	}
 	
 	@Override
 	public void readFromNBT(NBTTagCompound tag) {
@@ -57,7 +44,6 @@ public class TileMillstone extends TileShaft implements IInventory, ISidedInvent
 	@Override
 	public void updateEntity() {
 		super.updateEntity();
-		shaftNode.tick();
 		if(worldObj.isRemote ? isProcessing : processing != null) {
 			ShaftNetwork net = shaftNode.getNetwork();
 			

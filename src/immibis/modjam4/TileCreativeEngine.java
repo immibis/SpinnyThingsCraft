@@ -15,8 +15,8 @@ public class TileCreativeEngine extends TileMachine {
 	@Override
 	public void updateEntity() {
 		super.updateEntity();
-		shaftNode.getNetwork().angvel = 3 << 24;
-		shaftNode.tick();
+		if(!worldObj.isRemote)
+			shaftNode.getNetwork().angvel = 3 << 24;
 	}
 	
 	@Override

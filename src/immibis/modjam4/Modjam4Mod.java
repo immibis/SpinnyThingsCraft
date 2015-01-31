@@ -9,12 +9,26 @@ import cpw.mods.fml.common.Mod.EventHandler;
 import cpw.mods.fml.common.Mod.Instance;
 import cpw.mods.fml.common.SidedProxy;
 import cpw.mods.fml.common.event.FMLInitializationEvent;
+import cpw.mods.fml.common.event.FMLServerAboutToStartEvent;
+import cpw.mods.fml.common.event.FMLServerStoppingEvent;
 import cpw.mods.fml.common.eventhandler.SubscribeEvent;
 import cpw.mods.fml.common.gameevent.TickEvent;
 import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import immibis.modjam4.bigblocks.BigBlockPlacementHighlightHandler;
+import immibis.modjam4.shaftnet.ShaftPhysicsUniverse;
+import immibis.modjam4.shaftsync.NetworkPacketHandler;
+import immibis.modjam4.shaftsync.ShaftSyncManagerClient;
+import immibis.modjam4.shaftsync.ShaftSyncManagerServer;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.renderer.RenderBlocks;
@@ -27,6 +41,7 @@ import net.minecraft.item.crafting.FurnaceRecipes;
 import net.minecraft.util.DamageSource;
 import net.minecraft.world.IBlockAccess;
 import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.world.WorldEvent;
 
 @Mod(modid = Modjam4Mod.MODID, version = "0.0")
 public class Modjam4Mod
@@ -64,7 +79,9 @@ public class Modjam4Mod
 	
 	@SubscribeEvent
 	public void onTick(TickEvent.ServerTickEvent evt) {
-		//System.out.println("tick");
+		if(evt.phase == TickEvent.Phase.END) {
+			universe.tick();
+		}
 	}
 	
     @EventHandler
@@ -73,6 +90,7 @@ public class Modjam4Mod
     	FMLCommonHandler.instance().bus().register(this);
     	
     	MinecraftForge.EVENT_BUS.register(new BigBlockPlacementHighlightHandler());
+    	MinecraftForge.EVENT_BUS.register(this);
     	
 		blockWoodenShaft = new BlockShaft(Material.wood);
 		blockWoodenShaft.setBlockName("immibis_modjam4.woodenShaft");
@@ -181,6 +199,8 @@ public class Modjam4Mod
 		GameRegistry.addRecipe(new ItemStack(blockCartBooster), "SIS", "AGA", "SSS", 'S', Blocks.cobblestone, 'I', Items.iron_ingot, 'A', blockWoodenShaft, 'G', itemGear);
 		
 		PROXY.init();
+		NetworkPacketHandler.init();
+		ShaftSyncManagerServer.init();
     }
 
     @SideOnly(Side.CLIENT)
@@ -197,7 +217,56 @@ public class Modjam4Mod
 		
 		DOUBLE_GEARBOX_RENDER_ID = RenderingRegistry.getNextAvailableRenderId();
 		RenderingRegistry.registerBlockHandler(new RenderBlockGearboxDouble());
+		
+		ShaftSyncManagerClient.instance.init();
 	}
+    
+    
+    
+    public static ShaftPhysicsUniverse universe;
+    private static File universeDataFile;
+    private static boolean isServerRunning;
+    @EventHandler
+    public void onServerStart(FMLServerAboutToStartEvent evt) {
+    	isServerRunning = true;
+    	
+    	if(universe != null || universeDataFile != null)
+    		throw new RuntimeException();
+    	
+    	universe = new ShaftPhysicsUniverse();
+    	
+    	universeDataFile = evt.getServer().getActiveAnvilConverter().getSaveLoader(evt.getServer().getFolderName(), false).getMapFileFromName("919205EE-DC36-3987-A5A9-17DB2C5E939B");
+    	if(universeDataFile.exists()) {
+    		try (InputStream in = new BufferedInputStream(new FileInputStream(universeDataFile))) {
+	    		universe.read(in);
+	    	} catch(IOException e) {
+	    		throw new RuntimeException(e);
+	    	}
+    	}
+    }
+    private void saveUniverse() {
+    	if(universe == null || universeDataFile == null)
+    		throw new AssertionError("Saving universe after FMLServerStoppingEvent?");
+	    try (OutputStream out = new BufferedOutputStream(new FileOutputStream(universeDataFile))) {
+			universe.write(out);
+		} catch(IOException e) {
+			throw new RuntimeException(e);
+		}
+    }
+    @SubscribeEvent
+    public void onWorldSave(WorldEvent.Save evt) {
+    	if(isServerRunning)
+    		saveUniverse();
+    }
+    @EventHandler
+    public void onServerStop(FMLServerStoppingEvent evt) {
+    	isServerRunning = false;
+    	saveUniverse();
+    	universe = null;
+    	universeDataFile = null;
+    }
+    
+    
 }
 
 

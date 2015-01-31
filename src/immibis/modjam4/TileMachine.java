@@ -23,6 +23,22 @@ public abstract class TileMachine extends TileEntity implements IShaft {
 		}
 	}
 	
+	protected void onUnload() {
+		firstTick = true;
+	}
+	
+	@Override
+	public void onChunkUnload() {
+		onUnload();
+		super.onChunkUnload();
+	}
+	
+	@Override
+	public void invalidate() {
+		onUnload();
+		super.invalidate();
+	}
+	
 	protected void updateNeighbourConnections() {}
 	
 	@Override

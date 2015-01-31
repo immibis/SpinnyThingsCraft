@@ -1,11 +1,21 @@
 package immibis.modjam4.shaftnet;
 
 import immibis.modjam4.shaftnet.MatrixMath.SingularMatrixException;
-
 import java.util.ArrayList;
 import java.util.List;
 
 public class NetworkGroup {
+	
+	private boolean deleted = false;
+	void markDeleted() {deleted = true;}
+	boolean isDeleted() {return deleted;}
+	
+	final ShaftPhysicsUniverse universe;
+	NetworkGroup(ShaftPhysicsUniverse universe) {
+		this.universe = universe;
+	}
+	
+	
 	List<ShaftNetwork> networks = new ArrayList<ShaftNetwork>();
 	boolean needVelocityRecalc = false;
 	
@@ -18,6 +28,8 @@ public class NetworkGroup {
 	long groupAngVel;
 	
 	void recalcVelocity() {
+		if(isDeleted()) throw new AssertionError("group was deleted");
+		
 		List<NetworkLink> links = new ArrayList<NetworkLink>();
 		for(ShaftNetwork n : networks)
 			for(NetworkLink l : n.links)
@@ -90,11 +102,16 @@ public class NetworkGroup {
 	}
 
 	void add(ShaftNetwork net) {
+		if(isDeleted()) throw new AssertionError("group was deleted");
+		if(net.group != this) throw new AssertionError();
+		if(networks.contains(net)) throw new AssertionError("network already added to group");
 		networks.add(net);
 		needVelocityRecalc = true;
 	}
 
 	void mergeInto(NetworkGroup group) {
+		if(isDeleted() || group.isDeleted()) throw new AssertionError("group was deleted");
+		
 		if(this == group)
 			return;
 		
@@ -110,7 +127,7 @@ public class NetworkGroup {
 		
 		ShaftNetwork referenceNetwork = networks.get(0);
 		
-		double referenceNetworkOldRelativeVelocity = referenceNetwork.relativeVelocity;
+		//double referenceNetworkOldRelativeVelocity = referenceNetwork.relativeVelocity;
 		
 		//double thisInertia = calcInertia();
 		//double otherInertia = group.calcInertia();
@@ -125,7 +142,7 @@ public class NetworkGroup {
 		
 		//group.recalcVelocity();
 		
-		double groupRelativeVelocity = referenceNetwork.relativeVelocity / referenceNetworkOldRelativeVelocity;
+		//double groupRelativeVelocity = referenceNetwork.relativeVelocity / referenceNetworkOldRelativeVelocity;
 		
 		// if groupRelativeVelocity is 2, then the R.V. of all networks previously in this group just doubled
 		
@@ -143,12 +160,33 @@ public class NetworkGroup {
 		double thisMomentum = thisInertia * groupAngVel;
 		double otherMomentum = otherInertia * group.groupAngVel;
 		group.groupAngVel = (long)(((thisMomentum < 0) != (otherMomentum < 0) ? otherMomentum + thisMomentum : Math.abs(thisMomentum) > Math.abs(otherMomentum) ? thisMomentum : otherMomentum) / (thisInertia + otherInertia));
+		
+		networks.clear();
+		getUniverse().deleteGroup(this);
 	}
 
 	public double calcInertia() {
+		if(isDeleted()) throw new AssertionError("group was deleted");
+		
 		double inertia = 0;
 		for(ShaftNetwork sn : networks)
 			inertia += sn.relativeVelocity*sn.relativeVelocity*sn.calcNetworkInertia();
 		return inertia;
+	}
+
+	public ShaftPhysicsUniverse getUniverse() {
+		return universe;
+	}
+	
+	/** Checks some invariants. */
+	public void validate() {
+		if(networks.size() == 0)
+			throw new AssertionError("group with no networks");
+		for(ShaftNetwork n : networks) {
+			if(n.isDeleted())
+				throw new AssertionError("group contains deleted network");
+			if(n.group != this)
+				throw new AssertionError("group contains network in different group");
+		}
 	}
 }
