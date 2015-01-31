@@ -1,9 +1,7 @@
 package immibis.modjam4;
 
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.init.Blocks;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 
 public class RenderTileWatermill extends RenderTileShaft {
@@ -51,7 +49,6 @@ public class RenderTileWatermill extends RenderTileShaft {
 			
 			// render paddle
 			{
-				double _x = x*R_MAX, _z = z*R_MAX;
 				double _nx=(nx*0.1+x*0.9)*R_MAX, _nz=(nz*0.1+z*0.9)*R_MAX;
 				double _px=(px*0.1+x*0.9)*R_MAX, _pz=(pz*0.1+z*0.9)*R_MAX;
 				

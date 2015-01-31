@@ -1,9 +1,5 @@
 package immibis.modjam4;
 
-import java.util.Random;
-
-import org.lwjgl.opengl.GL11;
-
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import net.minecraft.block.material.Material;
@@ -13,6 +9,7 @@ import net.minecraft.client.renderer.Tessellator;
 import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import org.lwjgl.opengl.GL11;
 
 public class BlockFan extends BlockShaft {
 	public BlockFan(Material m) {

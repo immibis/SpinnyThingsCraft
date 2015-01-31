@@ -1,12 +1,10 @@
 package immibis.modjam4;
 
-import java.util.List;
-
 import immibis.modjam4.shaftnet.ShaftNode;
 import immibis.modjam4.shaftnet.SpeedTorqueCurve;
+import java.util.List;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.player.EntityPlayer;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.AxisAlignedBB;
 
 public class TileFan extends TileShaft implements SpeedTorqueCurve {

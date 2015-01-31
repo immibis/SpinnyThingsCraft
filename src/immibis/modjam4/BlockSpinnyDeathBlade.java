@@ -1,7 +1,5 @@
 package immibis.modjam4;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderBlocks;
@@ -10,6 +8,7 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.world.World;
+import org.lwjgl.opengl.GL11;
 
 public class BlockSpinnyDeathBlade extends BlockShaft {
 	public BlockSpinnyDeathBlade() {

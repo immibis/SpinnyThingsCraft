@@ -2,7 +2,6 @@ package immibis.modjam4;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import net.minecraft.world.World;
 
 public class CableNetwork {

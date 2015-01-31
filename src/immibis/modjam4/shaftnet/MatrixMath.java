@@ -1,9 +1,8 @@
 package immibis.modjam4.shaftnet;
 
-import java.util.Arrays;
-
 public class MatrixMath {
 	
+	@SuppressWarnings("serial")
 	public static class SingularMatrixException extends Exception {}
 
 	/**
@@ -19,8 +18,6 @@ public class MatrixMath {
 			double maxLeadingValue = Double.NEGATIVE_INFINITY;
 			for(int row = col; row < nrows; row++) {
 				double leadingValue = Math.abs(matrix[row][col]);
-				if(Double.isInfinite(leadingValue) || Double.isNaN(leadingValue))
-					leadingValue = leadingValue;
 				if(leadingValue > maxLeadingValue) {
 					maxLeadingValue = leadingValue;
 					maxLeadingValueRow = row;

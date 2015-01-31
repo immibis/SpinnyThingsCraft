@@ -4,7 +4,6 @@ import immibis.modjam4.shaftnet.MatrixMath.SingularMatrixException;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 public class NetworkGroup {
 	List<ShaftNetwork> networks = new ArrayList<ShaftNetwork>();

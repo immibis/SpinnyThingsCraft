@@ -1,12 +1,9 @@
 package immibis.modjam4;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.init.Blocks;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
+import org.lwjgl.opengl.GL11;
 
 public class RenderTileSpinnyDeathBlade extends RenderTileShaft {
 
@@ -17,7 +14,7 @@ public class RenderTileSpinnyDeathBlade extends RenderTileShaft {
 		
 		double r = 4.5;
 		
-		double y1 = 0.45, y2 = 0.35;
+		double y1 = 0.45;//, y2 = 0.35;
 		
 		t.draw();
 		

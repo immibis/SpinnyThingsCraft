@@ -1,10 +1,8 @@
 package immibis.modjam4;
 
-import java.util.List;
-
 import immibis.modjam4.shaftnet.ShaftNode;
 import immibis.modjam4.shaftnet.SpeedTorqueCurve;
-import net.minecraft.entity.Entity;
+import java.util.List;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.util.AxisAlignedBB;
 

@@ -1,7 +1,5 @@
 package immibis.modjam4;
 
-import org.lwjgl.opengl.GL11;
-
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
@@ -9,8 +7,8 @@ import net.minecraft.client.renderer.texture.TextureMap;
 import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.init.Blocks;
 import net.minecraft.tileentity.TileEntity;
-import net.minecraft.tileentity.TileEntityFlowerPot;
 import net.minecraft.util.IIcon;
+import org.lwjgl.opengl.GL11;
 
 public class RenderTileFan extends TileEntitySpecialRenderer {
 	public void renderAttachment() {}

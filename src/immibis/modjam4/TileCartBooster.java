@@ -1,11 +1,10 @@
 package immibis.modjam4;
 
-import java.util.List;
-
-import net.minecraft.entity.item.EntityMinecart;
-import net.minecraft.util.AxisAlignedBB;
 import immibis.modjam4.shaftnet.ShaftNode;
 import immibis.modjam4.shaftnet.SpeedTorqueCurve;
+import java.util.List;
+import net.minecraft.entity.item.EntityMinecart;
+import net.minecraft.util.AxisAlignedBB;
 
 public class TileCartBooster extends TileShaft implements SpeedTorqueCurve {
 	

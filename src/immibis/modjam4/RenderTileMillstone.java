@@ -1,9 +1,7 @@
 package immibis.modjam4;
 
 import net.minecraft.client.renderer.Tessellator;
-import net.minecraft.client.renderer.tileentity.TileEntitySpecialRenderer;
 import net.minecraft.init.Blocks;
-import net.minecraft.tileentity.TileEntity;
 import net.minecraft.util.IIcon;
 
 public class RenderTileMillstone extends RenderTileShaft {

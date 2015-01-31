@@ -3,8 +3,6 @@ package immibis.modjam4;
 import immibis.modjam4.shaftnet.NetworkLink;
 import immibis.modjam4.shaftnet.ShaftNetwork;
 import immibis.modjam4.shaftnet.ShaftNode;
-import immibis.modjam4.shaftnet.SpeedTorqueCurve;
-import net.minecraft.tileentity.TileEntity;
 
 public class TileGearboxDouble extends TileMachine {
 	

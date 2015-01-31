@@ -3,15 +3,11 @@ package immibis.modjam4.bigblocks;
 import immibis.modjam4.BlockWatermill;
 import immibis.modjam4.BlockWindmill;
 
-import java.util.Collection;
-
 import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.item.ItemBlock;
-import net.minecraft.util.ChunkCoordinates;
 import net.minecraft.util.MovingObjectPosition.MovingObjectType;
-import net.minecraft.world.IBlockAccess;
 import net.minecraft.world.World;
 import net.minecraftforge.client.event.DrawBlockHighlightEvent;
 import net.minecraftforge.common.util.ForgeDirection;

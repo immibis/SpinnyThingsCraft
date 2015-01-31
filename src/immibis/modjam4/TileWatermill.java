@@ -6,7 +6,6 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockLiquid;
 import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.world.World;
-import net.minecraftforge.fluids.BlockFluidClassic;
 
 public class TileWatermill extends TileShaft implements SpeedTorqueCurve {
 	
@@ -51,8 +50,6 @@ public class TileWatermill extends TileShaft implements SpeedTorqueCurve {
 	@Override
 	public void updateEntity() {
 		super.updateEntity();
-		
-		int meta = getBlockMetadata();
 		
 		obstructed = false;
 		maxTorque = 0;

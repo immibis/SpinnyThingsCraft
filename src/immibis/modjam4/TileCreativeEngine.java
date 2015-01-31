@@ -1,7 +1,6 @@
 package immibis.modjam4;
 
 import immibis.modjam4.shaftnet.ShaftNode;
-import net.minecraft.tileentity.TileEntity;
 
 public class TileCreativeEngine extends TileMachine {
 	
