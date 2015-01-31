@@ -53,19 +53,23 @@ public class ShaftNetwork {
 		
 		//angvel *= 0.95;
 		
-		double inertia = group.calcInertia() * (relativeVelocity * relativeVelocity);
+		double inertia = getApparentInertia();
 		
 		long sumtorque = 0;
 		for(ShaftNode sn : nodes) {
 			SpeedTorqueCurve stc = sn.getSpeedTorqueCurve();
 			if(stc != null) {
-				sumtorque += stc.getTorqueAtSpeed(angvel) / inertia;
+				long newtorque = stc.getTorqueAtSpeed(angvel);
+				if(ShaftUtils.willAdditionOverflow(sumtorque, newtorque))
+					System.out.println("Warning: torque overflow (" + sumtorque + " + " + newtorque + ")");
+				else
+					sumtorque += newtorque;
 			}
 		}
 		
 		//System.out.println("angvel "+angvel+", sumtorque "+sumtorque+", inertia "+inertia);
 		
-		group.groupAngVel += sumtorque;
+		group.groupAngVel += sumtorque / inertia;
 	}
 
 	// TODO what does this even do?
@@ -100,8 +104,7 @@ public class ShaftNetwork {
 	
 	@Override
 	public String toString() {
-		return "NET"+netID+", group="+Integer.toHexString(group == null ? 0 : group.hashCode())+", rv="+relativeVelocity+", angvel="+ShaftUtils.toDegreesPerSecond((int)angvel)
-			+", inertia="+(group == null ? 0 : group.calcInertia() * (relativeVelocity * relativeVelocity));
+		return "NET"+netID;
 	}
 
 	public double calcNetworkInertia() {
@@ -151,6 +154,6 @@ public class ShaftNetwork {
 	}
 	
 	public double getApparentInertia() {
-		return group.calcInertia() * relativeVelocity * relativeVelocity;
+		return group.calcInertia() / (relativeVelocity * relativeVelocity);
 	}
 }

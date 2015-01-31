@@ -68,4 +68,13 @@ public class ShaftUtils {
 		}
 		return fromRadians(Math.atan2(totSin / n, totCos / n));
 	}
+
+	public static boolean willAdditionOverflow(long a, long b) {
+		if((a < 0) != (b < 0))
+			return false;
+		if(a < 0)
+			return (a + b) > a;
+		else
+			return (a + b) < a;
+	}
 }
