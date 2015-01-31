@@ -104,7 +104,7 @@ public class ShaftNetwork {
 			+", inertia="+(group == null ? 0 : group.calcInertia() * (relativeVelocity * relativeVelocity));
 	}
 
-	double calcNetworkInertia() {
+	public double calcNetworkInertia() {
 		return nodes.size();
 	}
 
@@ -141,4 +141,16 @@ public class ShaftNetwork {
 	
 	private static AtomicInteger nextNetID = new AtomicInteger(0);
 	public final int netID = nextNetID.incrementAndGet();
+	
+	public NetworkGroup getGroup() {
+		return group;
+	}
+	
+	public double getRelativeVelocity() {
+		return relativeVelocity;
+	}
+	
+	public double getApparentInertia() {
+		return group.calcInertia() * relativeVelocity * relativeVelocity;
+	}
 }

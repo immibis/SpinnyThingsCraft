@@ -3,11 +3,9 @@ package immibis.modjam4;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import immibis.modjam4.shaftnet.ShaftNode;
-import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.nbt.NBTTagCompound;
 import net.minecraft.network.NetworkManager;
 import net.minecraft.network.play.server.S35PacketUpdateTileEntity;
-import net.minecraft.util.ChatComponentText;
 
 public class TileShaft extends TileMachine {
 	
@@ -68,18 +66,6 @@ public class TileShaft extends TileMachine {
 		worldObj.markBlockForUpdate(xCoord, yCoord, zCoord);
 		shaftNode.updateNeighbours();
 	}
-
-	public boolean debug(EntityPlayer pl) {
-		
-		if(worldObj.isRemote) {
-			pl.addChatComponentMessage(new ChatComponentText("client net ID: " + clientNetID));
-			return false;
-		}
-		
-		pl.addChatComponentMessage(new ChatComponentText("network: "+shaftNode.getNetwork()));
-		
-		return false;
-	}
 	
 	@Override
 	@SideOnly(Side.CLIENT)
@@ -93,5 +79,9 @@ public class TileShaft extends TileMachine {
 		NBTTagCompound tag = new NBTTagCompound();
 		tag.setInteger("netID", shaftNode.getNetwork().netID);
 		return new S35PacketUpdateTileEntity(xCoord, yCoord, zCoord, 0, tag);
+	}
+
+	public ShaftNode getShaftNode() {
+		return shaftNode;
 	}
 }

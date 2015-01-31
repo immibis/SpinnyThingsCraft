@@ -17,6 +17,7 @@ import cpw.mods.fml.common.registry.GameRegistry;
 import cpw.mods.fml.relauncher.Side;
 import cpw.mods.fml.relauncher.SideOnly;
 import immibis.modjam4.bigblocks.BigBlockPlacementHighlightHandler;
+import immibis.modjam4.debugger.ItemDebugger;
 import immibis.modjam4.shaftnet.ShaftPhysicsUniverse;
 import immibis.modjam4.shaftsync.NetworkPacketHandler;
 import immibis.modjam4.shaftsync.ShaftSyncManagerClient;
@@ -69,6 +70,7 @@ public class Modjam4Mod
 	public static Item itemPaddle;
 	public static Item itemBlade;
 	public static Item itemSail;
+	public static Item itemDebugger;
 	
 	public static DamageSource damageSourceSpinnyBlade = new DamageSource("immibis_modjam4.spinnyBlade");
 	
@@ -168,6 +170,9 @@ public class Modjam4Mod
 		itemSail.setTextureName("immibis_modjam4:sail");
 		itemSail.setUnlocalizedName("immibis_modjam4.sail");
 		GameRegistry.registerItem(itemSail, "sail");
+		
+		itemDebugger = new ItemDebugger();
+		GameRegistry.registerItem(itemDebugger, "debugger");
 		
 		GameRegistry.registerTileEntity(TileShaft.class, "immibisMJ4.shaft");
 		GameRegistry.registerTileEntity(TileCreativeEngine.class, "immibisMJ4.creativeEngine");

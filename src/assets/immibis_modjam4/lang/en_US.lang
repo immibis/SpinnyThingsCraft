@@ -15,6 +15,7 @@ item.immibis_modjam4.gear.name=Stone Gear
 item.immibis_modjam4.paddle.name=Wooden Paddle
 item.immibis_modjam4.blade.name=Iron Blade
 item.immibis_modjam4.sail.name=Sail
+item.immibis.spinnycraft.debugger.name=SpinnyThingsCraft Debugger
 
 death.attack.immibis_modjam4.spinnyBlade=%s was dumb enough to walk into a giant spinning blade of death.
 death.attack.immibis_modjam4.spinnyBlade.player=%s walked into a giant spinning death blade whilst fighting %s.

@@ -3,6 +3,7 @@ package immibis.modjam4.shaftnet;
 import immibis.modjam4.shaftnet.MatrixMath.SingularMatrixException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 public class NetworkGroup {
 	
@@ -189,4 +190,7 @@ public class NetworkGroup {
 				throw new AssertionError("group contains network in different group");
 		}
 	}
+	
+	private static AtomicInteger nextGroupID = new AtomicInteger();
+	public final int groupID = nextGroupID.incrementAndGet();
 }

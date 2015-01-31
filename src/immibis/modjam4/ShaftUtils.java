@@ -27,6 +27,10 @@ public class ShaftUtils {
 		return angvel * (360.0 * 20.0 / 4294967296.0);
 	}
 	
+	public static double toDegreesPerSecond(long angvel) {
+		return angvel * (360.0 * 20.0 / 4294967296.0);
+	}
+	
 	public static double toRadiansPerSecond(int angvel) {
 		return angvel * (Math.PI * 2.0 * 20.0 / 4294967296.0);
 	}
