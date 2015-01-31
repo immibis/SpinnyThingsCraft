@@ -1,5 +1,7 @@
 package immibis.modjam4;
 
+import immibis.modjam4.shaftsync.ClientShaftNetwork;
+import immibis.modjam4.shaftsync.ShaftSyncManagerClient;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.RenderHelper;
 import net.minecraft.client.renderer.Tessellator;
@@ -24,8 +26,9 @@ public class RenderTileFan extends TileEntitySpecialRenderer {
 		
 		RenderHelper.disableStandardItemLighting();
 		
-		long angvel = te.shaftNode.getNetwork().angvel;
-		float angle = (float)((te.shaftNode.getNetwork().angle + angvel * partialTick) / (4294967296.0 / 360.0));
+		ClientShaftNetwork csn = ShaftSyncManagerClient.instance.getClientNetwork(te.clientNetID);
+		long angvel = csn.angvel;
+		float angle = (float)((csn.angle + angvel * partialTick) / (4294967296.0 / 360.0));
 		
 		GL11.glPushMatrix();
 		GL11.glTranslated(renderX+0.5, renderY+0.5, renderZ+0.5);
